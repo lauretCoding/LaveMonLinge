@@ -55,15 +55,7 @@ class BasketController extends Controller
                 $orderItem->setStatut('En attente');
                 $orderItem->setOrderLaundry($orderLaundry);
                 $orderItem->setBarcode($barcode);
-                if ($optionLaundry)
-                {
-                    $orderItem->addOption($this->get('doctrine')->getManager()->merge($optionLaundry));
-                    $priceOption = $product->getOptionLaundry()->getPrice();
-                }
-                else
-                {
-                    $priceOption = 0;
-                }
+                $orderItem->addOption($this->get('doctrine')->getManager()->merge($optionLaundry));
 
 
                 $this->getOrderManager()->saveOrderItem($orderItem);
@@ -78,7 +70,7 @@ class BasketController extends Controller
                     $price = $orderItem->getProduct()->getPrice() * $quantity;
                 }
 
-                $total += $price + $priceOption;
+                $total += $price + $product->getOptionLaundry()->getPrice();
 
 
             }
